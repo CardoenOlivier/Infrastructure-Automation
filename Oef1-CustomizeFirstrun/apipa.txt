@@ -1,0 +1,15 @@
+cat >/etc/NetworkManager/system-connections/MCT_APIPA.nmconnection <<'MCT_APIPA'
+[connection]
+id=MCT_APIPA
+type=ethernet
+interface-name=eth0
+[ethernet]
+[ipv4]
+method=link-local
+[ipv6]
+addr-gen-mode=default
+method=disabled
+[proxy]
+MCT_APIPA
+chmod 0600 /etc/NetworkManager/system-connections/*
+chown root:root /etc/NetworkManager/system-connections/*
