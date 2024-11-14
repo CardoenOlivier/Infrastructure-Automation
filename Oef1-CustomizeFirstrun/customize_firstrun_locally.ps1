@@ -36,7 +36,7 @@ else {
 
 # Read 'firstrun.sh' into an array for line-by-line manipulation
 $firstRunLines = Get-Content -Path $firstrunPath
-$rmLineIndex = $firstRunLines.IndexOf("rm -f /boot/firstrun.sh")
+$rmLineIndex = $firstRunLines.IndexOf("rm -rf /boot/firstrun.sh")
 
 # Ensure no redundant modifications are made
 if ($firstRunLines[$rmLineIndex - 1] -match $lastTwoLines[0]) {
