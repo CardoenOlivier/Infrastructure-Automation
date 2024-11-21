@@ -2,9 +2,9 @@ from netmiko import ConnectHandler
 
 cat3560 = {
     'device_type': 'cisco_ios',
-    'host': '192.168.0.10',
-    'username': 'admin',
-    'password': 'iloveramsticks',
+    'host': '192.168.100.100',
+    'username': '<username>',
+    'password': '<password>',
     'port': 22,
     }
 

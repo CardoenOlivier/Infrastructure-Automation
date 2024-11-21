@@ -1,8 +1,0 @@
-Vlan,Description,Address,Netmask,Switch,Ports
-100,CD-WIFI,,,1,1 - 12
-200,CD-IP-CAM,,,1,13
-300,CD-Signage,,,1,14
-400,CD-Lockers,,,1,15 - 16
-500,CD-Printers,,,1,17 - 18
-600,CD-ClientsD0-1-2,,,1,19 - 22
-700,CD-Management,192.168.0.1,255.255.0.0,,
