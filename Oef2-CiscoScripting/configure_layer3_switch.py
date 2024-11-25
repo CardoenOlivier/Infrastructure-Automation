@@ -116,7 +116,7 @@ def configure_layer3_switch_from_csv(csv_file, switch_ip, vtp_mode, vtp_domain):
             
             # Save configuration to memory
             net_connect.send_command("end")
-            net_connect.send_command("wr mem")
+            #net_connect.send_command("wr mem")
             
             print(f"VLAN {vlan_ids[0]} and ports {ports} configured successfully.")
 

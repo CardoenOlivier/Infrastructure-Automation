@@ -1,0 +1,123 @@
+vtp mode transparent
+vtp domain howest
+vtp password secretpassword
+!
+conf t
+vlan 1982
+name CD-WIFI
+interface vlan1982
+description CD-WIFI
+ip address 172.19.82.1 255.255.255.0
+no shut
+!
+interface range FastEthernet 0/1-9
+switchport mode access
+switchport access vlan 1982
+no shut
+!
+conf t
+vlan 1982
+name CD-WIFI
+interface range FastEthernet 0/10
+switchport mode access
+switchport access vlan 1982
+no shut
+!
+conf t
+vlan 1969
+name CD-IP-Cam
+interface vlan1969
+description CD-IP-Cam
+ip address 172.19.69.1 255.255.255.0
+no shut
+!
+interface range FastEthernet 0/11-13
+switchport mode access
+switchport access vlan 1969
+no shut
+!
+conf t
+vlan 1969
+name CD-IP-Cam
+interface range FastEthernet 0/14
+switchport mode access
+switchport access vlan 1969
+no shut
+!
+conf t
+vlan 1978
+name CD-Lockers
+interface vlan1978
+description CD-Lockers
+ip address 172.19.78.1 255.255.255.0
+no shut
+!
+interface range FastEthernet 0/15-16
+switchport mode access
+switchport access vlan 1978
+no shut
+!
+conf t
+vlan 1978
+name CD-Lockers
+interface range FastEthernet 0/17
+switchport mode access
+switchport access vlan 1978
+no shut
+!
+conf t
+vlan 1966
+name CD-HVAC
+interface vlan1966
+description CD-HVAC
+ip address 172.19.66.1 255.255.255.0
+no shut
+!
+interface range FastEthernet 0/18-19
+switchport mode access
+switchport access vlan 1966
+no shut
+!
+conf t
+vlan 1966
+name CD-HVAC
+interface range FastEthernet 0/20
+switchport mode access
+switchport access vlan 1966
+no shut
+!
+conf t
+vlan 1968
+name CD-Printers
+interface vlan1968
+description CD-Printers
+ip address 172.19.68.1 255.255.255.0
+no shut
+!
+interface range FastEthernet 0/21
+switchport mode access
+switchport access vlan 1968
+no shut
+!
+conf t
+vlan 1968
+name CD-Printers
+interface range FastEthernet 0/22
+switchport mode access
+switchport access vlan 1968
+no shut
+!
+conf t
+vlan 300
+name CD-Trunk
+interface vlan300
+description CD-Trunk
+ip address 172.19.71.1 255.255.255.0
+no shut
+!
+interface range FastEthernet 0/24
+switchport mode access
+switchport access vlan 300
+no shut
+!
+end

@@ -1,0 +1,39 @@
+! Cisco Router Configuration
+! Generated from CSV
+
+interface gi0/0
+ description WAN
+ ip address dhcp
+ no shutdown
+
+interface gi0/1
+ description Servers
+ ip address 192.168.10.254 255.255.255.0
+ switchport access vlan 10
+ no shutdown
+
+interface gi0/1
+ description Accounting
+ ip address 192.168.20.254 255.255.255.0
+ switchport access vlan 20
+ no shutdown
+
+interface gi0/1
+ description HR
+ ip address 192.168.30.254 255.255.255.0
+ switchport access vlan 30
+ no shutdown
+
+interface gi0/1
+ description Marketing
+ ip address 192.168.40.254 255.255.255.0
+ switchport access vlan 40
+ no shutdown
+
+interface gi0/1
+ description Production
+ ip address 192.168.50.254 255.255.255.0
+ switchport access vlan 50
+ no shutdown
+
+! End of Configuration
