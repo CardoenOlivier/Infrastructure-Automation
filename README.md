@@ -10,7 +10,7 @@
 #### Custom Netmiko scripts voor een Cisco Layer 2 & Layer 3 switch te configureren
 
 ### Oefening 3
-#### Custom python script voor een Cisco Breedband router in te stellen (config in txt formaar)
+#### Custom python script voor een Cisco Breedband router in te stellen (config in txt formaat)
 
 ### Oefening 4
 #### Python script voor een Shelly SmartPlug S in te stellen. (API v1)
