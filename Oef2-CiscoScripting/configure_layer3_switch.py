@@ -19,7 +19,7 @@ def configure_layer3_switch_from_csv(csv_file, switch_ip, vtp_mode, vtp_domain):
         'device_type': 'cisco_ios',
         'host': switch_ip,
         'username': 'admin',
-        'password': 'iloveramsticks',
+        'password': 'admin123',
         'port': 22,
     }
     net_connect = ConnectHandler(**cat3560)
@@ -114,9 +114,7 @@ def configure_layer3_switch_from_csv(csv_file, switch_ip, vtp_mode, vtp_domain):
                 # Send the commands for trunk or access port
                 net_connect.send_config_set(commands)
             
-            # Save configuration to memory
             net_connect.send_command("end")
-            #net_connect.send_command("wr mem")
             
             print(f"VLAN {vlan_ids[0]} and ports {ports} configured successfully.")
 
@@ -128,8 +126,8 @@ def configure_layer3_switch_from_csv(csv_file, switch_ip, vtp_mode, vtp_domain):
     net_connect.disconnect()
 
 if __name__ == "__main__":
-    csv_file = "layer3.csv"  # Path to your CSV file
-    switch_ip = "192.168.100.100"  # IP address of the Layer 3 switch
-    vtp_mode = "transparent"  # Set VTP mode to 'transparent'
-    vtp_domain = "howest"  # Set your VTP domain
+    csv_file = "layer3.csv"
+    switch_ip = "192.168.100.100"
+    vtp_mode = "transparent" 
+    vtp_domain = "howest"
     configure_layer3_switch_from_csv(csv_file, switch_ip, vtp_mode, vtp_domain)
