@@ -3,14 +3,9 @@ import time
 from pywifi import PyWiFi, const
 import argparse
 
-<<<<<<< HEAD
 WIFI_SSID = 'Howest-IoT'
 WIFI_PASSWORD = 'LZe5buMyZUcDpLY' #wachtwoord
 
-=======
-WIFI_SSID = 'telenet-F39B7AD'  # Je thuisnetwerk voor testen
-WIFI_PASSWORD = ''  # Wachtwoord
->>>>>>> 94da65049aec9802b987a8bb1a01debf8a3867bc
 
 def send_request(url, method='get', data=None):
     """
