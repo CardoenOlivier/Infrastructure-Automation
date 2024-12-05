@@ -1,7 +1,6 @@
 import requests
 import time
-from pywifi import PyWiFi, const
-import argparse
+from pywifi import PyWiFi, const, Profile
 
 WIFI_SSID = 'Howest-IoT'
 WIFI_PASSWORD = 'LZe5buMyZUcDpLY' #wachtwoord
@@ -76,21 +75,21 @@ def set_relay_default(ip_address, relay_id, state):
     send_request(url, method='post')
 
 
-def setup_mqtt(ip_address, broker_ip, topic, enable=True):
+def setup_mqtt(ip_address, broker_ip, topic):
     """
     Configure MQTT settings for the Shelly device.
     """
     payload = {
-        "mqtt_server": broker_ip if enable else "",
-        "mqtt_enable": enable,
+        "mqtt_server": broker_ip,
+        "mqtt_enable": True,
         "mqtt_user": "",
         "mqtt_pass": "",
-        "mqtt_id": topic if enable else "",
+        "mqtt_id": topic,
         "mqtt_max_qos": 0,
         "mqtt_retain": False,
     }
     url = f"{ip_address}/settings"
-    send_request(url, method='post', data=payload)
+    send_request(url, method='get', data=payload)
 
 
 def reboot(ip_address):
@@ -126,6 +125,7 @@ def connect_to_ap(ssid):
     iface = wifi.interfaces()[0]
     iface.disconnect()
     time.sleep(2)
+    #scan voor ssids
     iface.scan()
     time.sleep(2)
     scan_results = iface.scan_results()
@@ -133,8 +133,16 @@ def connect_to_ap(ssid):
     for result in scan_results:
         if ssid in result.ssid:
             print(f"Attempting to connect to {result.ssid}...")
-            profile = iface.add_network_profile(ssid=result.ssid)
-            iface.connect(profile)
+            profile = Profile()
+            profile.ssid = result.ssid
+            profile.auth = const.AUTH_ALG_OPEN
+            profile.akm.append(const.AKM_TYPE_NONE)
+            profile.cipher = const.CIPHER_TYPE_NONE
+
+            # iface.remove_all_network_profiles()
+            temp_profile = iface.add_network_profile(profile)
+
+            iface.connect(temp_profile)
             time.sleep(5)
 
             if iface.status() == const.IFACE_CONNECTED:
@@ -145,33 +153,69 @@ def connect_to_ap(ssid):
     return False
 
 
+def connect_to_originl_network(ssid=WIFI_SSID, password=WIFI_PASSWORD):
+    """
+    Connect to the Howest-IoT network using the specified SSID and password.
+    """
+    wifi = PyWiFi()
+    iface = wifi.interfaces()[0]
+    iface.disconnect()
+    time.sleep(2)
+    
+    # Scan for available networks
+    iface.scan()
+    time.sleep(2)
+    scan_results = iface.scan_results()
+
+    if scan_results:
+        for result in scan_results:
+            if ssid in result.ssid:
+                print(f"Attempting to connect to {ssid}...")
+                profile = Profile()
+                profile.ssid = ssid
+                profile.auth = const.AUTH_ALG_OPEN
+                profile.akm.append(const.AKM_TYPE_WPA2PSK)
+                profile.cipher = const.CIPHER_TYPE_CCMP
+                profile.key = password  # Add the password here
+
+                # Add and connect to the network
+                iface.remove_all_network_profiles()  # Clear existing profiles
+                temp_profile = iface.add_network_profile(profile)
+
+                iface.connect(temp_profile)
+                time.sleep(5)
+
+                if iface.status() == const.IFACE_CONNECTED:
+                    print(f"Connected to {ssid}")
+                    return True
+                else:
+                    print(f"Failed to connect to {ssid}")
+    return False
+
+
+
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Configure Shelly smart plug.")
-    parser.add_argument("--name", type=str, default="Cardoen-Olivier-Outlet1", help="Name of the Shelly device")
-    parser.add_argument("--enable-cloud", action="store_true", help="Enable MQTT cloud connection")
-    parser.add_argument("--broker-ip", type=str, default="172.23.83.254", help="IP address of the MQTT broker")
-
-    args = parser.parse_args()
-
     try:
         shelly_devices = scan_shelly_devices()
         if not shelly_devices:
             print("No Shelly devices found.")
         else:
-            print(f"the following Shelly devices has been found: {shelly_devices}")
+            print(f"the following Shelly devices has been found:{shelly_devices}")
             for device_ssid in shelly_devices:
                 print(f"Attempting to connect to {device_ssid}...")
                 if connect_to_ap(device_ssid):
-                    SHELLY_IP = "http://192.168.33.1"  # Default IP
+                    SHELLY_IP = "http://192.168.33.1"  #default
                     configure_led_settings(SHELLY_IP, status_led=True, power_led=True)
-                    rename_device(SHELLY_IP, args.name)
+                    rename_device(SHELLY_IP, f"Cardoen-Olivier-Plug")
                     set_power_limit(SHELLY_IP, 2200)
                     set_relay_default(SHELLY_IP, 0, "off")
-                    setup_mqtt(SHELLY_IP, args.broker_ip, args.name, enable=args.enable_cloud)
+                    setup_mqtt(SHELLY_IP, "172.23.83.254", "Cardoen-Olivier-Outlet1")
                     reboot(SHELLY_IP)
-                    print("Connection will be lost when configuring Wi-Fi...")
+                    #zal connectie verliezen achter hij verbind met de wifi
+                    print('Connecetion will be lost when configuring wifi...')
                     update_wifi(SHELLY_IP, WIFI_SSID, WIFI_PASSWORD)
                 else:
                     print(f"Could not connect to {device_ssid}.")
+            connect_to_originl_network()
     except Exception as e:
         print(f"An error occurred: {str(e)}")
